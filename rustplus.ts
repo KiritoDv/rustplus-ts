@@ -1,11 +1,11 @@
 "use strict";
 
-const path = require('path');
+import EventEmitter from 'events';
+import path from 'path'
 const WebSocket = require('ws');
 const protobuf = require("protobufjs");
-const { EventEmitter } = require('events');
 
-class RustPlus extends EventEmitter {
+export default class RustPlus extends EventEmitter {
 
     /**
      * @param server The ip address or hostname of the Rust Server
@@ -21,7 +21,19 @@ class RustPlus extends EventEmitter {
      * - request: When an AppRequest has been sent to the Rust Server.
      * - disconnected: When we are disconnected from the Rust Server.
      * - error: When something goes wrong.
-     */
+    */
+
+    server: string;
+    port: string;
+    playerId: string;
+    playerToken: string;
+    useFacepunchProxy: boolean;
+    seq: number;
+    seqCallbacks: any[];
+    AppRequest: any;
+    AppMessage: any;
+    websocket: any;
+
     constructor(server: string, port: string, playerId: string, playerToken: string, useFacepunchProxy = false) {
         super();
         this.server = server;
@@ -323,5 +335,3 @@ class RustPlus extends EventEmitter {
     }
 
 }
-
-module.exports = RustPlus;
