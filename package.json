@@ -1,14 +1,10 @@
 {
-  "name": "@liamcottle/rustplus.js",
+  "name": "@lywx/rustplus.ts",
   "version": "2.3.0",
   "description": "Unofficial NodeJS library for controlling Smart Switches in the PC game Rust",
-  "main": "rustplus.js",
-  "bin": {
-    "rustplus": "./cli/index.js"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/liamcottle/rustplus.js.git"
+    "url": "git+https://github.com/KiritoDv/rustplus.ts.git"
   },
   "keywords": [
     "rust",
@@ -29,7 +25,7 @@
   },
   "homepage": "https://github.com/liamcottle/rustplus.js#readme",
   "dependencies": {
-    "axios": "^0.24.0",
+    "axios": "^0.26.1",
     "chrome-launcher": "^0.15.0",
     "command-line-args": "^5.2.0",
     "command-line-usage": "^6.1.1",

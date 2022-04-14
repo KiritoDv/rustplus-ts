@@ -22,19 +22,15 @@ class RustPlus extends EventEmitter {
      * - disconnected: When we are disconnected from the Rust Server.
      * - error: When something goes wrong.
      */
-    constructor(server, port, playerId, playerToken, useFacepunchProxy = false) {
-
+    constructor(server: string, port: string, playerId: string, playerToken: string, useFacepunchProxy = false) {
         super();
-
         this.server = server;
         this.port = port;
         this.playerId = playerId;
         this.playerToken = playerToken;
         this.useFacepunchProxy = useFacepunchProxy;
-
         this.seq = 0;
         this.seqCallbacks = [];
-
     }
 
     /**
@@ -43,7 +39,7 @@ class RustPlus extends EventEmitter {
     connect() {
 
         // load protobuf then connect
-        protobuf.load(path.resolve(__dirname, "rustplus.proto")).then((root) => {
+        protobuf.load(path.resolve(__dirname, "rustplus.proto")).then((root: any) => {
 
             // make sure existing connection is disconnected before connecting again.
             if(this.websocket){
@@ -67,11 +63,11 @@ class RustPlus extends EventEmitter {
             });
 
             // fire event for websocket errors
-            this.websocket.on('error', (e) => {
+            this.websocket.on('error', (e: any) => {
                 this.emit('error', e);
             });
 
-            this.websocket.on('message', (data) => {
+            this.websocket.on('message', (data: any) => {
 
                 // decode received message
                 var message = this.AppMessage.decode(data);
@@ -124,7 +120,7 @@ class RustPlus extends EventEmitter {
      * @param data this should contain valid data for the AppRequest packet in the rustplus.proto schema file
      * @param callback
      */
-    sendRequest(data, callback) {
+    sendRequest(data: any, callback: any) {
 
         // increment sequence number
         let currentSeq = ++this.seq;
@@ -155,7 +151,7 @@ class RustPlus extends EventEmitter {
      * @param data this should contain valid data for the AppRequest packet defined in the rustplus.proto schema file
      * @param timeoutMilliseconds milliseconds before the promise will be rejected. Defaults to 10 seconds.
      */
-    sendRequestAsync(data, timeoutMilliseconds = 10000) {
+    sendRequestAsync(data: any, timeoutMilliseconds = 10000) {
         return new Promise((resolve, reject) => {
 
             // reject promise after timeout
@@ -164,7 +160,7 @@ class RustPlus extends EventEmitter {
             }, timeoutMilliseconds);
 
             // send request
-            this.sendRequest(data, (message) => {
+            this.sendRequest(data, (message: any) => {
 
                 // cancel timeout
                 clearTimeout(timeout);
@@ -192,7 +188,7 @@ class RustPlus extends EventEmitter {
      * @param value the value to set on the entity
      * @param callback
      */
-    setEntityValue(entityId, value, callback) {
+    setEntityValue(entityId: number, value: any, callback?: any) {
         this.sendRequest({
             entityId: entityId,
             setEntityValue: {
@@ -206,7 +202,7 @@ class RustPlus extends EventEmitter {
      * @param entityId the entity id of the smart switch to turn on
      * @param callback
      */
-    turnSmartSwitchOn(entityId, callback) {
+    turnSmartSwitchOn(entityId: number, callback: any) {
         this.setEntityValue(entityId, true, callback);
     }
 
@@ -215,7 +211,7 @@ class RustPlus extends EventEmitter {
      * @param entityId the entity id of the smart switch to turn off
      * @param callback
      */
-    turnSmartSwitchOff(entityId, callback) {
+    turnSmartSwitchOff(entityId: number, callback: any) {
         this.setEntityValue(entityId, false, callback);
     }
 
@@ -224,7 +220,7 @@ class RustPlus extends EventEmitter {
      * You will get rate limited by the Rust Server after a short period.
      * It was interesting to watch in game though 😝
      */
-    strobe(entityId, timeoutMilliseconds = 100, value = true) {
+    strobe(entityId: number, timeoutMilliseconds = 100, value = true) {
         this.setEntityValue(entityId, value);
         setTimeout(() => {
             this.strobe(entityId, timeoutMilliseconds, !value);
@@ -236,7 +232,7 @@ class RustPlus extends EventEmitter {
      * @param message the message to send to team chat
      * @param callback
      */
-    sendTeamMessage(message, callback) {
+    sendTeamMessage(message: any, callback: any) {
         this.sendRequest({
             sendTeamMessage: {
                 message: message,
@@ -249,7 +245,7 @@ class RustPlus extends EventEmitter {
      * @param entityId the id of the entity to get info of
      * @param callback
      */
-    getEntityInfo(entityId, callback) {
+    getEntityInfo(entityId: number, callback: any) {
         this.sendRequest({
             entityId: entityId,
             getEntityInfo: {
@@ -261,18 +257,18 @@ class RustPlus extends EventEmitter {
     /**
      * Get the Map
      */
-    getMap(callback) {
+    getMap(callback: any) {
         this.sendRequest({
             getMap: {
 
             },
         }, callback);
     }
-    
+
     /**
      * Get the ingame time
     */
-    getTime(callback) {
+    getTime(callback: any) {
         this.sendRequest({
             getTime: {
 
@@ -283,7 +279,7 @@ class RustPlus extends EventEmitter {
     /**
      * Get all map markers
      */
-    getMapMarkers(callback) {
+    getMapMarkers(callback: any) {
         this.sendRequest({
             getMapMarkers: {
 
@@ -294,7 +290,7 @@ class RustPlus extends EventEmitter {
     /**
      * Get the server info
      */
-    getInfo(callback) {
+    getInfo(callback: any) {
         this.sendRequest({
             getInfo: {
 
@@ -305,11 +301,9 @@ class RustPlus extends EventEmitter {
     /**
      * Get team info
      */
-    getTeamInfo(callback) {
+    getTeamInfo(callback: any) {
         this.sendRequest({
-            getTeamInfo: {
-
-            },
+            getTeamInfo: {},
         }, callback);
     }
 
@@ -319,7 +313,7 @@ class RustPlus extends EventEmitter {
      * @param frame integer that should be incremented for each frame request. Otherwise a cached frame is returned
      * @param callback
      */
-    getCameraFrame(identifier, frame, callback) {
+    getCameraFrame(identifier: string, frame: number, callback: any) {
         this.sendRequest({
             getCameraFrame: {
                 identifier: identifier,
