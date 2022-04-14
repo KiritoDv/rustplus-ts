@@ -2,6 +2,10 @@
   "name": "@lywx/rustplus-ts",
   "version": "2.3.0",
   "description": "Unofficial NodeJS library for controlling Smart Switches in the PC game Rust",
+  "main": "./lib/rustplus.js",
+  "files": [
+    "lib/**/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KiritoDv/rustplus.ts.git"
